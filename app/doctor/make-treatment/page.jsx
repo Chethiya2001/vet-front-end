@@ -30,8 +30,20 @@ export default function TreatmentPage() {
       const response = await fetch(
         `http://localhost:5000/animal/owner/nic/${nic}`
       );
+      if (!response.ok) throw new Error("Failed to fetch animal data");
       const data = await response.json();
       setAnimalData(data);
+      // Assuming data is an array and selecting the first item
+      if (data.length > 0) {
+        const animal = data[0]; // Get the first animal
+        setFormData((prevData) => ({
+          ...prevData,
+          animal_name: animal.name, 
+          owner_nic: animal.animalOwnerNic, 
+        }));
+      }
+
+      console.log("Fetched Animal Data:", data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -45,6 +57,9 @@ export default function TreatmentPage() {
     date: "",
     price: "",
     prescription: null,
+    doctorId: "",
+    animal_name: "",
+    owner_nic: "",
   });
 
   const handleChange = (e) => {
@@ -75,9 +90,16 @@ export default function TreatmentPage() {
     }
   };
   const handleDoctorChange = (event) => {
-    setSelectedDoctor(event.target.value);
-  };
+    const doctorId = event.target.value;
+    setSelectedDoctor(doctorId);
+    setFormData((prevData) => ({
+      ...prevData,
+      doctorId: doctorId,
+    }));
 
+    // Log selected doctor ID to console
+    console.log("Selected Doctor ID:", doctorId);
+  };
   return (
     <div className="min-h-screen bg-white flex justify-start items-start">
       <div className="w-1/1 bg-white p-8 rounded shadow">
@@ -186,7 +208,6 @@ export default function TreatmentPage() {
                   name="prescription"
                   accept=".pdf"
                   onChange={handleChange}
-            
                   className="w-full"
                 />
               </div>
