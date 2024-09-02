@@ -7,7 +7,7 @@ const Doctorpage = () => {
     <Layout>
       <div className="grid grid-cols-2 gap-4 p-4">
         {/* First Row: 2 Cards */}
-        <Link href="/doctor/doctor-register">
+        <Link href="/doctor/make-treatment">
           <div className="bg-white shadow-md rounded-lg p-6 cursor-pointer hover:shadow-lg">
             <Image
               src="/images/doctor-register.png"
@@ -16,7 +16,7 @@ const Doctorpage = () => {
               height={100}
               className="mb-4"
             />
-            <p>Doctor Register</p>
+            <p>Make Treatment</p>
           </div>
         </Link>
         <Link href="admin/staff-register">
