@@ -1,9 +1,8 @@
-"use client";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import SearchForm from "@/components/search";
 import AnimalOwnerTable from "@/components/AnimalOwnerTable";
 import SearchUpdateAnimalForm from "@/components/AnimalSearchUpdateForm";
-import axios from "axios";
 
 export default function AppoimentPage() {
   const [animalData, setAnimalData] = useState([]);
@@ -12,41 +11,12 @@ export default function AppoimentPage() {
   const [date, setDate] = useState("");
   const [appointments, setAppointments] = useState([]);
 
-  // Form state for appointment submission
+  // New state for form inputs
   const [appointmentNumber, setAppointmentNumber] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
-
-  // IDs from the selected or displayed data
   const [animalOwnerId, setAnimalOwnerId] = useState("");
   const [animalId, setAnimalId] = useState("");
   const [doctorId, setDoctorId] = useState("");
-
-  const handleSubmitAppointment = async () => {
-    try {
-      // Assuming you select an appointment from the list, you will get the IDs from the selected appointment
-      const selectedAppointment = appointments.find(
-        (app) => app.appointmentNumber === appointmentNumber
-      );
-
-      if (selectedAppointment) {
-        const response = await axios.post("http://localhost:5000/appoiment", {
-          appointmentNumber,
-          animalOwnerId: selectedAppointment.animalOwnerId, // Derived from selected appointment
-          animalId: selectedAppointment.animalId, // Derived from selected appointment
-          doctorId: selectedAppointment.doctorId, // Derived from selected appointment
-          date: appointmentDate, // Use the date from the form input
-        });
-        console.log("Appointment submitted:", response.data);
-        // Clear form inputs
-        setAppointmentNumber("");
-        setAppointmentDate("");
-      } else {
-        console.error("Appointment not found");
-      }
-    } catch (error) {
-      console.error("Error submitting appointment:", error);
-    }
-  };
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -89,6 +59,24 @@ export default function AppoimentPage() {
 
   const handleDoctorChange = (event) => {
     setSelectedDoctor(event.target.value);
+  };
+
+  const handleSubmit = async () => {
+    const newAppointment = {
+      appointmentNumber,
+      animalOwnerId,
+      animalId,
+      doctorId,
+      date: `${date}T${appointmentTime}:00.000Z`, // Adjust as needed for time zone
+    };
+
+    try {
+      await axios.post("http://localhost:5000/appoiment", newAppointment);
+      // Optionally reset form or update UI after submission
+      console.log("Appointment submitted successfully");
+    } catch (error) {
+      console.error("Error submitting appointment:", error);
+    }
   };
 
   return (
@@ -185,6 +173,7 @@ export default function AppoimentPage() {
             </div>
           )}
         </div>
+
         {/* Form for submitting new appointment */}
         <div className="bg-white p-8 rounded shadow">
           <h1 className="text-2xl font-bold mb-4">Submit New Appointment</h1>
@@ -219,8 +208,40 @@ export default function AppoimentPage() {
               className="p-2 border border-gray-300 rounded w-full"
             />
           </div>
+          <div className="mb-4">
+            <label
+              htmlFor="animalOwnerId"
+              className="block text-sm font-medium mb-1"
+            >
+              Animal Owner ID
+            </label>
+            <input
+              type="text"
+              id="animalOwnerId"
+              value={animalOwnerId}
+              onChange={(e) => setAnimalOwnerId(e.target.value)}
+              className="p-2 border border-gray-300 rounded w-full"
+              placeholder="Enter animal owner ID"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="animalId"
+              className="block text-sm font-medium mb-1"
+            >
+              Animal ID
+            </label>
+            <input
+              type="text"
+              id="animalId"
+              value={animalId}
+              onChange={(e) => setAnimalId(e.target.value)}
+              className="p-2 border border-gray-300 rounded w-full"
+              placeholder="Enter animal ID"
+            />
+          </div>
           <button
-            onClick={handleSubmitAppointment}
+            onClick={handleSubmit}
             className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
           >
             Submit

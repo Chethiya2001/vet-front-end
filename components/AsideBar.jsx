@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-const AsideBar = () => {
+
+const AsideBar = ({ role }) => {
   return (
     <div className="h-screen w-64 bg-gray-800 text-white flex flex-col py-6">
       <nav className="flex-1">
@@ -10,7 +11,7 @@ const AsideBar = () => {
           alt="Vet Vantage Management System"
           width={200}
           height={200}
-          className="mx-auto pt-5 py-5 "
+          className="mx-auto pt-5 py-5"
         />
         <ul className="space-y-2 mt-30">
           <li>
@@ -18,11 +19,13 @@ const AsideBar = () => {
               Home
             </Link>
           </li>
-          <li>
-            <Link href="/admin" className="block p-4 hover:bg-gray-700">
-              Admin
-            </Link>
-          </li>
+          {role === "admin" && (
+            <li>
+              <Link href="/admin" className="block p-4 hover:bg-gray-700">
+                Admin
+              </Link>
+            </li>
+          )}
           <li>
             <Link href="/doctor" className="block p-4 hover:bg-gray-700">
               Doctor
@@ -31,6 +34,16 @@ const AsideBar = () => {
           <li>
             <Link href="/staff" className="block p-4 hover:bg-gray-700">
               Staff
+            </Link>
+          </li>
+          <li>
+            <Link href="/register" className="block p-4 hover:bg-gray-700">
+              Register
+            </Link>
+          </li>
+          <li>
+            <Link href="/login" className="block p-4 hover:bg-gray-700">
+              Login
             </Link>
           </li>
         </ul>
