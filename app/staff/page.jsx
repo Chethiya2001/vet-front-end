@@ -33,7 +33,7 @@ const Staffpage = () => {
 
         {/* Second Row: 3 Cards */}
         <div className="col-span-2 grid grid-cols-3 gap-4">
-          <Link href="/animal-owner-records">
+          <Link href="/aminal-owner-register">
             <div className="bg-white shadow-md rounded-lg p-6 cursor-pointer hover:shadow-lg">
               <Image
                 src="/images/animal-owner-records.png"
@@ -42,7 +42,7 @@ const Staffpage = () => {
                 height={100}
                 className="mb-4"
               />
-              <p>Animal Owner Records</p>
+              <p>Animal Owner Register</p>
             </div>
           </Link>
           <Link href="/essential-records">
