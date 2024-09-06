@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import SearchForm from "@/components/search";
@@ -10,13 +11,10 @@ export default function AppoimentPage() {
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [date, setDate] = useState("");
   const [appointments, setAppointments] = useState([]);
-
-  // New state for form inputs
-  const [appointmentNumber, setAppointmentNumber] = useState("");
-  const [appointmentTime, setAppointmentTime] = useState("");
-  const [animalOwnerId, setAnimalOwnerId] = useState("");
-  const [animalId, setAnimalId] = useState("");
-  const [doctorId, setDoctorId] = useState("");
+  const [selectedAnimalOwnerId, setSelectedAnimalOwnerId] = useState(""); // State for animal owner ID
+  const [appointmentNumber, setAppointmentNumber] = useState(""); // State for appointment number
+  const [appointmentTime, setAppointmentTime] = useState(""); // State for appointment time
+  const [selectedAnimalId, setSelectedAnimalId] = useState(""); // State for selected animal ID
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -50,7 +48,7 @@ export default function AppoimentPage() {
       const response = await axios.get(
         `http://localhost:5000/appoiment/date?date=${date}`
       );
-      const data = Array.isArray(response.data) ? response.data : []; // Ensure data is an array
+      const data = Array.isArray(response.data) ? response.data : [];
       setAppointments(data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -64,28 +62,32 @@ export default function AppoimentPage() {
   const handleSubmit = async () => {
     const newAppointment = {
       appointmentNumber,
-      animalOwnerId,
-      animalId,
-      doctorId,
-      date: `${date}T${appointmentTime}:00.000Z`, // Adjust as needed for time zone
+      animalOwnerNic: selectedAnimalOwnerId,
+      animalId: selectedAnimalId,
+      doctorId: selectedDoctor,
+      date: appointmentTime,
     };
+    console.log(newAppointment);
 
     try {
       await axios.post("http://localhost:5000/appoiment", newAppointment);
-      // Optionally reset form or update UI after submission
       console.log("Appointment submitted successfully");
+      alert("Appointment submitted successfully");
+      
     } catch (error) {
       console.error("Error submitting appointment:", error);
     }
   };
-
   return (
     <div className="min-h-screen bg-white flex justify-start items-start">
       <div className="w-1/1 bg-white p-8 rounded shadow">
+        {/* Search Form */}
         <SearchForm onSearch={handleSearch} />
+        {/* AnimalOwnerTable where you select the animal and animal owner */}
         <AnimalOwnerTable data={animalData} />
         <SearchUpdateAnimalForm />
       </div>
+
       <div className="w-full bg-white p-8 rounded shadow py-5 px-5 mt-5 mb-5">
         <label
           htmlFor="doctorDropdown"
@@ -177,6 +179,25 @@ export default function AppoimentPage() {
         {/* Form for submitting new appointment */}
         <div className="bg-white p-8 rounded shadow">
           <h1 className="text-2xl font-bold mb-4">Submit New Appointment</h1>
+
+          {/* Animal Owner ID Input */}
+          <div className="mb-4">
+            <label
+              htmlFor="animalOwnerId"
+              className="block text-sm font-medium mb-1"
+            >
+              Animal Owner NIC
+            </label>
+            <input
+              type="text"
+              id="animalOwnerNic"
+              value={selectedAnimalOwnerId}
+              onChange={(e) => setSelectedAnimalOwnerId(e.target.value)}
+              className="p-2 border border-gray-300 rounded w-full"
+              placeholder="Enter animal owner ID"
+            />
+          </div>
+
           <div className="mb-4">
             <label
               htmlFor="appointmentNumber"
@@ -195,33 +216,17 @@ export default function AppoimentPage() {
           </div>
           <div className="mb-4">
             <label
-              htmlFor="appointmentTime"
+              htmlFor="appointmentDateTime"
               className="block text-sm font-medium mb-1"
             >
-              Appointment Time
+              Appointment Date & Time
             </label>
             <input
-              type="time"
-              id="appointmentTime"
+              type="datetime-local"
+              id="date"
               value={appointmentTime}
               onChange={(e) => setAppointmentTime(e.target.value)}
               className="p-2 border border-gray-300 rounded w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="animalOwnerId"
-              className="block text-sm font-medium mb-1"
-            >
-              Animal Owner ID
-            </label>
-            <input
-              type="text"
-              id="animalOwnerId"
-              value={animalOwnerId}
-              onChange={(e) => setAnimalOwnerId(e.target.value)}
-              className="p-2 border border-gray-300 rounded w-full"
-              placeholder="Enter animal owner ID"
             />
           </div>
           <div className="mb-4">
@@ -234,17 +239,18 @@ export default function AppoimentPage() {
             <input
               type="text"
               id="animalId"
-              value={animalId}
-              onChange={(e) => setAnimalId(e.target.value)}
+              value={selectedAnimalId}
+              onChange={(e) => setSelectedAnimalId(e.target.value)}
               className="p-2 border border-gray-300 rounded w-full"
-              placeholder="Enter animal ID"
+              placeholder="Animal ID"
             />
           </div>
+
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
-            Submit
+            Submit Appointment
           </button>
         </div>
       </div>

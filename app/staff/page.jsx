@@ -33,7 +33,7 @@ const Staffpage = () => {
 
         {/* Second Row: 3 Cards */}
         <div className="col-span-2 grid grid-cols-3 gap-4">
-          <Link href="/aminal-owner-register">
+          <Link href="staff/aminal-owner-register">
             <div className="bg-white shadow-md rounded-lg p-6 cursor-pointer hover:shadow-lg">
               <Image
                 src="/images/animal-owner-records.png"
