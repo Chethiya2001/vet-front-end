@@ -45,7 +45,7 @@ const Staffpage = () => {
               <p>Animal Owner Register</p>
             </div>
           </Link>
-          <Link href="/essential-records">
+          <Link href="/staff/inventrory">
             <div className="bg-white shadow-md rounded-lg p-6 cursor-pointer hover:shadow-lg">
               <Image
                 src="/images/essential-records.png"
@@ -54,7 +54,7 @@ const Staffpage = () => {
                 height={100}
                 className="mb-4"
               />
-              <p>Essential Records</p>
+              <p>Manage Inverntory</p>
             </div>
           </Link>
           <Link href="/appointment-records">
