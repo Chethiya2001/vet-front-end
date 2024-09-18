@@ -39,6 +39,10 @@ const IssueDrugPage = () => {
         "http://localhost:5000/issue-drug",
         requestBody
       );
+
+      setQuantity(0);
+      setOwnerNic("");
+      setPetName("");
       alert("Drug issued successfully");
       console.log(response.data);
     } catch (error) {
