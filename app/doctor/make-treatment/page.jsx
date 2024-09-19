@@ -9,6 +9,7 @@ export default function TreatmentPage() {
   const [animalData, setAnimalData] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState("");
+  const [selectedDoctorInfo, setSelectedDoctorInfo] = useState(null);
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -38,8 +39,8 @@ export default function TreatmentPage() {
         const animal = data[0]; // Get the first animal
         setFormData((prevData) => ({
           ...prevData,
-          animal_name: animal.name, 
-          owner_nic: animal.animalOwnerNic, 
+          animal_name: animal.name,
+          owner_nic: animal.animalOwnerNic,
         }));
       }
 
@@ -89,16 +90,25 @@ export default function TreatmentPage() {
       alert("Error submitting treatment.");
     }
   };
-  const handleDoctorChange = (event) => {
+  const handleDoctorChange = async (event) => {
     const doctorId = event.target.value;
     setSelectedDoctor(doctorId);
     setFormData((prevData) => ({
       ...prevData,
       doctorId: doctorId,
     }));
-
-    // Log selected doctor ID to console
-    console.log("Selected Doctor ID:", doctorId);
+    // Fetch doctor details based on the selected doctor ID
+    try {
+      const response = await fetch(
+        `http://localhost:5000/doctor/id/${doctorId}`
+      );
+      if (!response.ok) throw new Error("Failed to fetch doctor details");
+      const data = await response.json();
+      setSelectedDoctorInfo(data);
+    } catch (error) {
+      console.error("Error fetching doctor details:", error);
+      setSelectedDoctorInfo(null);
+    }
   };
   return (
     <div className="min-h-screen bg-white flex justify-start items-start">
@@ -129,6 +139,30 @@ export default function TreatmentPage() {
             </option>
           ))}
         </select>
+        {selectedDoctorInfo && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Doctor Details:</h3>
+            <p>
+              <strong>Name:</strong> {selectedDoctorInfo.name}
+            </p>
+            <p>
+              <strong>Address:</strong> {selectedDoctorInfo.address}
+            </p>
+            <p>
+              <strong>Email:</strong> {selectedDoctorInfo.email}
+            </p>
+            <p>
+              <strong>Qualifications:</strong>{" "}
+              {selectedDoctorInfo.qualifications}
+            </p>
+            <p>
+              <strong>Gender:</strong> {selectedDoctorInfo.gender}
+            </p>
+            <p>
+              <strong>Contact:</strong> {selectedDoctorInfo.contact}
+            </p>
+          </div>
+        )}
 
         <div className="flex justify-start items-center  bg-gray-100">
           <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">

@@ -5,7 +5,7 @@ import axios from "axios";
 const IssueDrugPage = () => {
   const [drugs, setDrugs] = useState([]);
   const [selectedDrugId, setSelectedDrugId] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const [ownerNic, setOwnerNic] = useState("");
   const [petName, setPetName] = useState("");
 
@@ -45,9 +45,12 @@ const IssueDrugPage = () => {
       setPetName("");
       alert("Drug issued successfully");
       console.log(response.data);
+
+      window.location.reload();
     } catch (error) {
       console.error("Error issuing drug:", error);
-      alert("Failed to issue drug");
+
+      alert("Failed to issue drug please check quantity and try again!");
     }
   };
 

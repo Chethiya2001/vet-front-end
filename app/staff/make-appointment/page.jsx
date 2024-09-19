@@ -15,6 +15,7 @@ export default function AppoimentPage() {
   const [appointmentNumber, setAppointmentNumber] = useState(""); // State for appointment number
   const [appointmentTime, setAppointmentTime] = useState(""); // State for appointment time
   const [selectedAnimalId, setSelectedAnimalId] = useState(""); // State for selected animal ID
+  const [selectedDoctorInfo, setSelectedDoctorInfo] = useState(null); // State for selected doctor information
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -43,11 +44,18 @@ export default function AppoimentPage() {
     }
   };
 
-  const handleApSearch = async () => {
+  const handleApSearch = async (doctorId, date) => {
     try {
+      // Make sure doctorId and date are valid before making the API request
+      if (!doctorId || !date) {
+        console.error("Doctor ID and Date are required");
+        return;
+      }
+
       const response = await axios.get(
-        `http://localhost:5000/appoiment/date?date=${date}`
+        `http://localhost:5000/appoiment/doctor/${doctorId}?date=${date}`
       );
+
       const data = Array.isArray(response.data) ? response.data : [];
       setAppointments(data);
     } catch (error) {
@@ -55,8 +63,22 @@ export default function AppoimentPage() {
     }
   };
 
-  const handleDoctorChange = (event) => {
-    setSelectedDoctor(event.target.value);
+  const handleDoctorChange = async (event) => {
+    const doctorId = event.target.value;
+    setSelectedDoctor(doctorId);
+
+    // Fetch doctor details based on the selected doctor ID
+    try {
+      const response = await fetch(
+        `http://localhost:5000/doctor/id/${doctorId}`
+      );
+      if (!response.ok) throw new Error("Failed to fetch doctor details");
+      const data = await response.json();
+      setSelectedDoctorInfo(data);
+    } catch (error) {
+      console.error("Error fetching doctor details:", error);
+      setSelectedDoctorInfo(null);
+    }
   };
 
   const handleSubmit = async () => {
@@ -73,11 +95,11 @@ export default function AppoimentPage() {
       await axios.post("http://localhost:5000/appoiment", newAppointment);
       console.log("Appointment submitted successfully");
       alert("Appointment submitted successfully");
-      
     } catch (error) {
       console.error("Error submitting appointment:", error);
     }
   };
+
   return (
     <div className="min-h-screen bg-white flex justify-start items-start">
       <div className="w-1/1 bg-white p-8 rounded shadow">
@@ -110,6 +132,30 @@ export default function AppoimentPage() {
             </option>
           ))}
         </select>
+        {selectedDoctorInfo && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Doctor Details:</h3>
+            <p>
+              <strong>Name:</strong> {selectedDoctorInfo.name}
+            </p>
+            <p>
+              <strong>Address:</strong> {selectedDoctorInfo.address}
+            </p>
+            <p>
+              <strong>Email:</strong> {selectedDoctorInfo.email}
+            </p>
+            <p>
+              <strong>Qualifications:</strong>{" "}
+              {selectedDoctorInfo.qualifications}
+            </p>
+            <p>
+              <strong>Gender:</strong> {selectedDoctorInfo.gender}
+            </p>
+            <p>
+              <strong>Contact:</strong> {selectedDoctorInfo.contact}
+            </p>
+          </div>
+        )}
 
         <br />
         <div className="p-8">
@@ -122,7 +168,7 @@ export default function AppoimentPage() {
               className="p-2 border border-gray-300 rounded"
             />
             <button
-              onClick={handleApSearch}
+              onClick={() => handleApSearch(selectedDoctor, date)} // Pass doctorId and date
               className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
               Search
@@ -143,8 +189,6 @@ export default function AppoimentPage() {
                     <th className="px-4 py-2 border-b text-left">
                       Date & Time
                     </th>
-                    <th className="px-4 py-2 border-b text-left">Owner Name</th>
-                    <th className="px-4 py-2 border-b text-left">Owner NIC</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -162,12 +206,12 @@ export default function AppoimentPage() {
                           minute: "2-digit",
                         })}
                       </td>
-                      <td className="px-4 py-2 border-b">
+                      {/* <td className="px-4 py-2 border-b">
                         {appointment.AnimalOwner.name}
-                      </td>
-                      <td className="px-4 py-2 border-b">
+                      </td> */}
+                      {/* <td className="px-4 py-2 border-b">
                         {appointment.AnimalOwner.nic}
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>
