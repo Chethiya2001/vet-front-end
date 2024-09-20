@@ -73,7 +73,7 @@ const Doctorpage = () => {
         </div>
 
         {/* Third Row: 2 Cards */}
-        <Link href="/treatment-records">
+        <Link href="doctor/treatment-records">
           <div className="bg-white shadow-md rounded-lg p-6 cursor-pointer hover:shadow-lg">
             <Image
               src="/images/treatment-records.png"
