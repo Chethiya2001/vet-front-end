@@ -19,7 +19,7 @@ const MakeInventroyPage = () => {
   // Fetch all drugs
   const fetchDrugs = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/inventory"); 
+      const response = await axios.get("http://localhost:5000/inventory");
       setDrugs(response.data);
     } catch (error) {
       console.error("Error fetching drugs:", error);
@@ -48,7 +48,7 @@ const MakeInventroyPage = () => {
   // Update a drug
   const updateDrug = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/inventory${id}`, editDrug); 
+      await axios.put(`http://localhost:5000/inventory/${id}`, editDrug);
       fetchDrugs();
       setEditDrugId(null);
     } catch (error) {
@@ -59,7 +59,7 @@ const MakeInventroyPage = () => {
   // Delete a drug
   const deleteDrug = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/inventory${id}`); 
+      await axios.delete(`http://localhost:5000/inventory/${id}`);
       fetchDrugs();
     } catch (error) {
       console.error("Error deleting drug:", error);
@@ -82,35 +82,45 @@ const MakeInventroyPage = () => {
             type="text"
             placeholder="Drug Name"
             value={newDrug.drugName}
-            onChange={(e) => setNewDrug({ ...newDrug, drugName: e.target.value })}
+            onChange={(e) =>
+              setNewDrug({ ...newDrug, drugName: e.target.value })
+            }
             className="border p-2 rounded"
           />
           <input
             type="text"
             placeholder="Batch Number"
             value={newDrug.batchNumber}
-            onChange={(e) => setNewDrug({ ...newDrug, batchNumber: e.target.value })}
+            onChange={(e) =>
+              setNewDrug({ ...newDrug, batchNumber: e.target.value })
+            }
             className="border p-2 rounded"
           />
           <input
             type="number"
             placeholder="Quantity"
             value={newDrug.quantity}
-            onChange={(e) => setNewDrug({ ...newDrug, quantity: e.target.value })}
+            onChange={(e) =>
+              setNewDrug({ ...newDrug, quantity: e.target.value })
+            }
             className="border p-2 rounded"
           />
           <input
             type="text"
             placeholder="Manufacturer"
             value={newDrug.manufacturer}
-            onChange={(e) => setNewDrug({ ...newDrug, manufacturer: e.target.value })}
+            onChange={(e) =>
+              setNewDrug({ ...newDrug, manufacturer: e.target.value })
+            }
             className="border p-2 rounded"
           />
           <input
             type="date"
             placeholder="Expiration Date"
             value={newDrug.expirationDate}
-            onChange={(e) => setNewDrug({ ...newDrug, expirationDate: e.target.value })}
+            onChange={(e) =>
+              setNewDrug({ ...newDrug, expirationDate: e.target.value })
+            }
             className="border p-2 rounded"
           />
           <input
@@ -124,7 +134,9 @@ const MakeInventroyPage = () => {
             type="text"
             placeholder="Description"
             value={newDrug.description}
-            onChange={(e) => setNewDrug({ ...newDrug, description: e.target.value })}
+            onChange={(e) =>
+              setNewDrug({ ...newDrug, description: e.target.value })
+            }
             className="border p-2 rounded"
           />
         </div>
@@ -196,49 +208,63 @@ const MakeInventroyPage = () => {
               type="text"
               placeholder="Drug Name"
               value={editDrug.drugName}
-              onChange={(e) => setEditDrug({ ...editDrug, drugName: e.target.value })}
+              onChange={(e) =>
+                setEditDrug({ ...editDrug, drugName: e.target.value })
+              }
               className="border p-2 rounded"
             />
             <input
               type="text"
               placeholder="Batch Number"
               value={editDrug.batchNumber}
-              onChange={(e) => setEditDrug({ ...editDrug, batchNumber: e.target.value })}
+              onChange={(e) =>
+                setEditDrug({ ...editDrug, batchNumber: e.target.value })
+              }
               className="border p-2 rounded"
             />
             <input
               type="number"
               placeholder="Quantity"
               value={editDrug.quantity}
-              onChange={(e) => setEditDrug({ ...editDrug, quantity: e.target.value })}
+              onChange={(e) =>
+                setEditDrug({ ...editDrug, quantity: e.target.value })
+              }
               className="border p-2 rounded"
             />
             <input
               type="text"
               placeholder="Manufacturer"
               value={editDrug.manufacturer}
-              onChange={(e) => setEditDrug({ ...editDrug, manufacturer: e.target.value })}
+              onChange={(e) =>
+                setEditDrug({ ...editDrug, manufacturer: e.target.value })
+              }
               className="border p-2 rounded"
             />
             <input
               type="date"
               placeholder="Expiration Date"
               value={editDrug.expirationDate}
-              onChange={(e) => setEditDrug({ ...editDrug, expirationDate: e.target.value })}
+              onChange={(e) =>
+                setEditDrug({ ...editDrug, expirationDate: e.target.value })
+              }
               className="border p-2 rounded"
             />
             <input
               type="number"
               placeholder="Price"
               value={editDrug.price}
-              onChange={(e) => setEditDrug({ ...editDrug, price: e.target.value })}
+              onChange={(e) =>
+                setEditDrug({ ...editDrug, price: e.target.value })
+              }
               className="border p-2 rounded"
             />
             <input
               type="text"
               placeholder="Description"
               value={editDrug.description}
-              onChange={(e) => setEditDrug({ ...editDrug, description: e.target.value })}
+              onChange={(e) =>
+                setEditDrug({ ...editDrug, description: e.target.value })
+              }
               className="border p-2 rounded"
             />
           </div>
