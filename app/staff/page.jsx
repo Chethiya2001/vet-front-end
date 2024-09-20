@@ -57,7 +57,7 @@ const Staffpage = () => {
               <p>Manage Inverntory</p>
             </div>
           </Link>
-          <Link href="/appointment-records">
+          <Link href="staff/display-appoiment">
             <div className="bg-white shadow-md rounded-lg p-6 cursor-pointer hover:shadow-lg">
               <Image
                 src="/images/appointment-records.png"
